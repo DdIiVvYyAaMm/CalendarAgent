@@ -28,7 +28,12 @@ def get_gmail_service():
             flow = InstalledAppFlow.from_client_secrets_file(
                 CREDENTIALS_FILE, SCOPES
             )
-            creds = flow.run_local_server(port=0)
+            creds = flow.run_local_server(
+                host="localhost",
+                port=8080,
+                prompt="consent",
+                authorization_prompt_message="Please visit this URL to authorize this application."
+            )
         with open(TOKEN_FILE, 'w') as token:
             token.write(creds.to_json())
     # Create the Gmail API client
@@ -50,7 +55,12 @@ def get_calendar_service():
             flow = InstalledAppFlow.from_client_secrets_file(
                 CREDENTIALS_FILE, SCOPES
             )
-            creds = flow.run_local_server(port=0)
+            creds = flow.run_local_server(
+                host="localhost",
+                port=8080,
+                prompt="consent",
+                authorization_prompt_message="Please visit this URL to authorize this application."
+            )
         with open(TOKEN_FILE, 'w') as token:
             token.write(creds.to_json())
     # Create the Calendar API client

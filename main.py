@@ -50,7 +50,7 @@ def main():
     calendar_agent = CalendarAgent(calendar_service)
 
     # Create our meeting scheduler
-    scheduler = MeetingScheduler(gmail_agent, calendar_agent)
+    scheduler = MeetingScheduler(config = config, gmail_agent = gmail_agent, calendar_agent=calendar_agent)
 
     # Start checking for new emails in a loop (blocking)
     scheduler.run_scheduler_loop()

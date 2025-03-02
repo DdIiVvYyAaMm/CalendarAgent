@@ -2,16 +2,16 @@
 
 # Google API scopes needed for Gmail and Calendar access
 SCOPES:
-  - https://www.googleapis.com/auth/gmail.readonly
+  - https://www.googleapis.com/auth/gmail.modify
   - https://www.googleapis.com/auth/gmail.send
   - https://www.googleapis.com/auth/calendar
 
 # Paths for OAuth credentials
-CREDENTIALS_FILE: "credentials.json"
+CREDENTIALS_FILE: "/Users/divyams/Downloads/AProject/CalendarAgent/config/credentials.json"
 TOKEN_FILE: "token.json"
 
 # OpenAI key
-OPENAI_API_KEY: "${OPENAI_API_KEY}"
+OPENAI_API_KEY: ${OPENAI_API_KEY}
 
 # Time zone
 LOCAL_TIMEZONE: "America/New_York"
@@ -19,3 +19,13 @@ LOCAL_TIMEZONE: "America/New_York"
 # Optional: any other custom settings
 CALENDAR_ID: "primary"
 CHECK_EMAIL_FREQUENCY_SECONDS: 30
+
+WHITELISTED_EMAILS:
+  - "divyamsharma1999@gmail.com"
+  # - Add other emails here
+
+SUBJECT_KEYWORDS:
+  - "Dinner"
+  - "Meeting"
+  - "Interview"
+  - "Invite"

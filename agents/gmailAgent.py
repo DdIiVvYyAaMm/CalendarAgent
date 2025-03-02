@@ -9,7 +9,8 @@ class GmailAgent:
     def __init__(self, service):
         self.service = service
 
-    def check_new_messages(self, query='is:unread'):
+    def check_new_messages(self, WHITELISTED_EMAILS, SUBJECT_KEYWORDS):
+        query  = self.build_gmail_query(WHITELISTED_EMAILS, SUBJECT_KEYWORDS, True)
         """
         Checks for new unread messages matching the given query.
         Returns a list of message data.
@@ -76,3 +77,33 @@ class GmailAgent:
             print(f"Email sent to {to_email} with subject: {subject}")
         except Exception as e:
             print(f"Error sending email: {e}")
+
+
+    def build_gmail_query(self, whitelisted_addresses, subject_keywords, unread_only=True):
+        """
+        Build a Gmail search query like:
+        'is:unread from:(addr1 OR addr2) subject:(keyword1 OR keyword2)'
+        """
+        # e.g. from:(addr1 OR addr2 OR addr3)
+        from_part = " OR ".join(whitelisted_addresses)
+        # e.g. subject:(keyword1 OR keyword2 OR keyword3)
+        subject_part = " OR ".join(subject_keywords)
+
+        # Construct final string
+        query_parts = []
+        if unread_only:
+            query_parts.append("is:unread")
+
+        # "from:(addr1 OR addr2 OR addr3)"
+        if whitelisted_addresses:
+            query_parts.append(f"from:({from_part})")
+
+        # "subject:(Dinner OR Meeting OR ...)"
+        if subject_keywords:
+            # If you have spaces in the keywords, you might need quotes around them
+            # for safety, but let's keep it simple:
+            query_parts.append(f"subject:({subject_part})")
+
+        # Join everything with spaces
+        query_str = " ".join(query_parts)
+        return query_str

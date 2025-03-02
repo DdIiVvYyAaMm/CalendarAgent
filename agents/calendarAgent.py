@@ -1,11 +1,5 @@
 # Description: Handles reading/writing events on the user's Google Calendar.
 
-import os
-from google.oauth2.credentials import Credentials
-from google.auth.transport.requests import Request
-from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build
-
 
 class CalendarAgent:
     """
@@ -33,28 +27,37 @@ class CalendarAgent:
             print(f"Error fetching calendar events: {e}")
             return []
 
-    def create_calendar_event(self, summary, description, start_time, end_time, attendees=None):
+    def create_calendar_event(self, summary, description, start_time, end_time, attendees=None, create_meet_link=False):
         """
         Creates a calendar event.
         Attendees should be a list of dicts: [{'email': 'someone@example.com'}]
         """
         event_body = {
             'summary': summary,
-            'description': description,
             'start': {
                 'dateTime': start_time.isoformat(),
-                'timeZone': str(start_time.tzinfo)
+                'timeZone': start_time.tzinfo.zone  # "America/New_York"
             },
             'end': {
                 'dateTime': end_time.isoformat(),
-                'timeZone': str(end_time.tzinfo)
+                'timeZone': end_time.tzinfo.zone
             },
-            'attendees': attendees if attendees else []
+            'attendees': [
+                {'email': attendees if attendees else []}
+            ],
+            'conferenceData': {
+                'createRequest': {
+                    'requestId': 'unique-req-id',
+                    'conferenceSolutionKey': { 'type': 'hangoutsMeet' }
+                }
+            }
         }
         try:
+            print("DEBUG: Attendees:", event_body['attendees'])
             event_result = self.service.events().insert(
                 calendarId='primary',
-                body=event_body
+                body=event_body,
+                conferenceDataVersion=1
             ).execute()
             print(f"Event created: {event_result.get('htmlLink')}")
             return event_result
