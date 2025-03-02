@@ -36,7 +36,6 @@ class MeetingScheduler:
         """
         Uses OpenAI to parse natural language in the email to extract proposed times.
         Return a list of potential datetimes or an empty list.
-        This is heavily simplified; in production you might use advanced prompt-engineering or extraction logic.
         """
         # prompt = f"""
         # The user email content is: 
@@ -106,35 +105,6 @@ class MeetingScheduler:
         except Exception as e:
             print(f"OpenAI parse error: {e}")
             return []
-
-    # def convert_to_localized_datetime(self, day_str, start_str, end_str, tz):
-    #     """
-    #     Convert the textual date/time strings to Python datetime objects in a given timezone.
-    #     """
-    #     localtz = pytz.timezone(tz)
-    #     # Basic parse of day_str: "YYYY-MM-DD"
-    #     year, month, day = map(int, day_str.split('-'))
-    #     # Basic parse of times "HH:MM <AM/PM>"
-    #     # This is simplistic – consider more robust time-parsing with dateutil, etc.
-    #     def parse_time(t):
-    #         match = re.match(r'(\d{1,2}):(\d{2})\s*(AM|PM)', t, re.IGNORECASE)
-    #         if not match:
-    #             return 0, 0
-    #         hh, mm, ampm = match.groups()
-    #         hh = int(hh)
-    #         mm = int(mm)
-    #         if ampm.lower() == 'pm' and hh != 12:
-    #             hh += 12
-    #         if ampm.lower() == 'am' and hh == 12:
-    #             hh = 0
-    #         return hh, mm
-
-    #     sh, sm = parse_time(start_str)
-    #     eh, em = parse_time(end_str)
-
-    #     start_dt = localtz.localize(datetime.datetime(year, month, day, sh, sm))
-    #     end_dt   = localtz.localize(datetime.datetime(year, month, day, eh, em))
-    #     return start_dt, end_dt
         
     def convert_to_localized_datetime(self, day_str, start_time_str, end_time_str, tz="America/New_York"):
         """
