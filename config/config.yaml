@@ -11,7 +11,7 @@ CREDENTIALS_FILE: "/Users/divyams/Downloads/AProject/CalendarAgent/config/creden
 TOKEN_FILE: "token.json"
 
 # OpenAI key
-OPENAI_API_KEY: ${OPENAI_API_KEY}
+OPENAI_API_KEY: "${OPENAI_API_KEY}"
 
 # Time zone
 LOCAL_TIMEZONE: "America/New_York"
